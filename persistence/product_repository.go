@@ -23,7 +23,7 @@ func NewProductRepository(dbPool *pgxpool.Pool) IProductRepository {
 
 func (productRepository ProductRepository) GetAllProducts() []domain.Product {
 	ctx := context.Background()
-	productRows, err := productRepository.dbPool.Query(ctx, "Select * from product")
+	productRows, err := productRepository.dbPool.Query(ctx, "Select * from products")
 
 	if err != nil {
 		log.Error("Error while getting all products %v", err)

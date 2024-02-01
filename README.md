@@ -52,12 +52,15 @@ echo "Table products created"
 sh test/scripts/test_db.sh
 ```
 - See the docker container is running...
+
 ![Postgres instance running](/test/documentation/docker-postgres-running.png "Postgres instance running")
 
-- Add Data Sources and Drivers
+- Add data sources and drivers
+
 ![Postgres db config](/test/documentation/postgres-db-config.png "Postgres db config")
 
 - See the postgres table and its columns
+
 ![Postgres db table](/test/documentation/postgres-db-table.png "Postgres db table")
 
 

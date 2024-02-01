@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"product-app/common/postgresql"
+	"product-app/domain"
 	"product-app/persistence"
 	"testing"
 )
@@ -42,7 +44,43 @@ func clear(ctx context.Context, dbPool *pgxpool.Pool) {
 
 func TestGetAllProducts(t *testing.T) {
 	setup(ctx, dbPool)
-	fmt.Println("TestGetAllProducts")
+
+	expectedProducts := []domain.Product{
+		{
+			Id:       1,
+			Name:     "AirFryer",
+			Price:    3000.0,
+			Discount: 22.0,
+			Store:    "ABC TECH",
+		},
+		{
+			Id:       2,
+			Name:     "Ütü",
+			Price:    1500.0,
+			Discount: 10.0,
+			Store:    "ABC TECH",
+		},
+		{
+			Id:       3,
+			Name:     "Washing Machine",
+			Price:    10000.0,
+			Discount: 15.0,
+			Store:    "ABC TECH",
+		},
+		{
+			Id:       4,
+			Name:     "Floor Lamp",
+			Price:    2000.0,
+			Discount: 0.0,
+			Store:    "ABC TECH",
+		},
+	}
+	t.Run("GetAllProducts", func(t *testing.T) {
+		actualProducts := productRepository.GetAllProducts()
+		assert.Equal(t, 4, len(actualProducts))
+		assert.Equal(t, expectedProducts, actualProducts)
+	})
+
 	clear(ctx, dbPool)
 }
 
