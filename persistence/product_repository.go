@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/labstack/gommon/log"
 	"product-app/domain"
@@ -9,6 +10,7 @@ import (
 
 type IProductRepository interface {
 	GetAllProducts() []domain.Product
+	GetAllProductsByStore(storeName string) []domain.Product
 }
 
 type ProductRepository struct {
@@ -30,6 +32,23 @@ func (productRepository ProductRepository) GetAllProducts() []domain.Product {
 		return []domain.Product{}
 	}
 
+	return extractProductsFromRows(productRows)
+}
+
+func (productRepository ProductRepository) GetAllProductsByStore(storeName string) []domain.Product {
+	ctx := context.Background()
+	getProductsByStoreNameSql := `Select * from products where store = $1`
+	productRows, err := productRepository.dbPool.Query(ctx, getProductsByStoreNameSql, storeName)
+
+	if err != nil {
+		log.Error("Error while getting all products %v", err)
+		return []domain.Product{}
+	}
+
+	return extractProductsFromRows(productRows)
+}
+
+func extractProductsFromRows(productRows pgx.Rows) []domain.Product {
 	var products = []domain.Product{}
 	var id int64
 	var name string

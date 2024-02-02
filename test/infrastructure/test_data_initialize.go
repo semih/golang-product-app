@@ -11,7 +11,7 @@ var INSERT_PRODUCTS = `INSERT INTO products (name, price, discount,store)
 VALUES('AirFryer',3000.0, 22.0, 'ABC TECH'),
 ('Ütü',1500.0, 10.0, 'ABC TECH'),
 ('Washing Machine',10000.0, 15.0, 'ABC TECH'),
-('Floor Lamp',2000.0, 0.0, 'ABC TECH');
+('Floor Lamp',2000.0, 0.0, 'FFF TECH');
 `
 
 func TestDataInitialize(ctx context.Context, dbPool *pgxpool.Pool) {
