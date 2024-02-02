@@ -119,6 +119,51 @@ func TestGetAllProductsByStore(t *testing.T) {
 	clear(ctx, dbPool)
 }
 
+func TestAddProduct(t *testing.T) {
+	expectedProducts := []domain.Product{
+		{
+			Id:       1,
+			Name:     "Glass",
+			Price:    100.0,
+			Discount: 0.0,
+			Store:    "FFF Tech",
+		},
+	}
+	newProduct := domain.Product{
+		Name:     "Glass",
+		Price:    100.0,
+		Discount: 0.0,
+		Store:    "FFF Tech",
+	}
+	t.Run("GetAllProductsByStore", func(t *testing.T) {
+		productRepository.AddProduct(newProduct)
+		actualProducts := productRepository.GetAllProducts()
+		assert.Equal(t, 1, len(actualProducts))
+		assert.Equal(t, expectedProducts, actualProducts)
+	})
+
+	clear(ctx, dbPool)
+}
+
+func TestGetProductById(t *testing.T) {
+	setup(ctx, dbPool)
+
+	t.Run("GetProductById", func(t *testing.T) {
+		actualProduct, _ := productRepository.GetById(1)
+		_, err := productRepository.GetById(5)
+		assert.Equal(t, domain.Product{
+			Id:       1,
+			Name:     "AirFryer",
+			Price:    3000.0,
+			Discount: 22.0,
+			Store:    "ABC TECH",
+		}, actualProduct)
+		assert.Equal(t, "Error while getting product with id 5", err.Error())
+	})
+
+	clear(ctx, dbPool)
+}
+
 /*func TestAdd(t *testing.T) {
 	t.Run("TestAdd", func(t *testing.T) {
 		actual := Add(10, 20)
