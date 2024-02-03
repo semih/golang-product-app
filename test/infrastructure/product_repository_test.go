@@ -176,6 +176,20 @@ func TestDeleteById(t *testing.T) {
 	clear(ctx, dbPool)
 }
 
+func TestUpdatePrice(t *testing.T) {
+	setup(ctx, dbPool)
+
+	t.Run("UpdatePrice", func(t *testing.T) {
+		productBeforeUpdate, _ := productRepository.GetById(1)
+		assert.Equal(t, float32(3000.0), productBeforeUpdate.Price)
+		productRepository.UpdatePrice(1, 4000.0)
+		productAfterUpdate, _ := productRepository.GetById(1)
+		assert.Equal(t, float32(4000.0), productAfterUpdate.Price)
+	})
+
+	clear(ctx, dbPool)
+}
+
 /*func TestAdd(t *testing.T) {
 	t.Run("TestAdd", func(t *testing.T) {
 		actual := Add(10, 20)

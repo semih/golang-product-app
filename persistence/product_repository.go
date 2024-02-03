@@ -17,6 +17,7 @@ type IProductRepository interface {
 	AddProduct(product domain.Product) error
 	GetById(productId int64) (domain.Product, error)
 	DeleteById(productId int64) error
+	UpdatePrice(productId int64, newPrice float32) error
 }
 
 type ProductRepository struct {
@@ -139,5 +140,25 @@ func (productRepository ProductRepository) DeleteById(productId int64) error {
 		return errors.New(fmt.Sprintf("Error while deleting product with id %d", productId))
 	}
 	log.Info("Product deleted")
+	return nil
+}
+
+func (productRepository ProductRepository) UpdatePrice(productId int64, newPrice float32) error {
+	ctx := context.Background()
+
+	_, getErr := productRepository.GetById(productId)
+
+	if getErr != nil {
+		return errors.New("Product not found")
+	}
+
+	updateSql := `Update products set price = $1 where id = $2`
+
+	_, err := productRepository.dbPool.Exec(ctx, updateSql, newPrice, productId)
+
+	if err != nil {
+		return errors.New(fmt.Sprintf("Error while updating product with id %d", productId))
+	}
+	log.Info("Product %d price updated with new price %v", productId, newPrice)
 	return nil
 }
