@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"product-app/domain"
 	"product-app/persistence"
 	"product-app/service/model"
@@ -25,32 +26,45 @@ type ProductService struct {
 	productRepository persistence.IProductRepository
 }
 
-func (p ProductService) Add(productCreate model.ProductCreate) error {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) Add(productCreate model.ProductCreate) error {
+
+	validateErr := validateProductCreate(productCreate)
+
+	if validateErr != nil {
+		return validateErr
+	}
+
+	return productService.productRepository.AddProduct(domain.Product{
+		Name:     productCreate.Name,
+		Price:    productCreate.Price,
+		Discount: productCreate.Discount,
+		Store:    productCreate.Store,
+	})
 }
 
-func (p ProductService) DeleteById(productId int64) error {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) DeleteById(productId int64) error {
+	return productService.productRepository.DeleteById(productId)
 }
 
-func (p ProductService) GetById(productId int64) (domain.Product, error) {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) GetById(productId int64) (domain.Product, error) {
+	return productService.productRepository.GetById(productId)
 }
 
-func (p ProductService) UpdatePrice(productId int64, newPrice float32) error {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) UpdatePrice(productId int64, newPrice float32) error {
+	return productService.productRepository.UpdatePrice(productId, newPrice)
 }
 
-func (p ProductService) GetAllProducts() []domain.Product {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) GetAllProducts() []domain.Product {
+	return productService.productRepository.GetAllProducts()
 }
 
-func (p ProductService) GetAllProductsByStore(storeName string) []domain.Product {
-	//TODO implement me
-	panic("implement me")
+func (productService *ProductService) GetAllProductsByStore(storeName string) []domain.Product {
+	return productService.productRepository.GetAllProductsByStore(storeName)
+}
+
+func validateProductCreate(productCreate model.ProductCreate) error {
+	if productCreate.Discount > 70.0 {
+		return errors.New("Discount cannot be greater than 70")
+	}
+	return nil
 }
