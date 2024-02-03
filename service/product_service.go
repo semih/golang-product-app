@@ -64,7 +64,7 @@ func (productService *ProductService) GetAllProductsByStore(storeName string) []
 
 func validateProductCreate(productCreate model.ProductCreate) error {
 	if productCreate.Discount > 70.0 {
-		return errors.New("Discount cannot be greater than 70")
+		return errors.New("Discount can not be greater than 70")
 	}
 	return nil
 }

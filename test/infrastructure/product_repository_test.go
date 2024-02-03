@@ -55,7 +55,7 @@ func TestGetAllProducts(t *testing.T) {
 		},
 		{
 			Id:       2,
-			Name:     "Ütü",
+			Name:     "Iron",
 			Price:    1500.0,
 			Discount: 10.0,
 			Store:    "ABC TECH",
@@ -97,7 +97,7 @@ func TestGetAllProductsByStore(t *testing.T) {
 		},
 		{
 			Id:       2,
-			Name:     "Ütü",
+			Name:     "Iron",
 			Price:    1500.0,
 			Discount: 10.0,
 			Store:    "ABC TECH",
