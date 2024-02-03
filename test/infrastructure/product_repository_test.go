@@ -158,7 +158,19 @@ func TestGetProductById(t *testing.T) {
 			Discount: 22.0,
 			Store:    "ABC TECH",
 		}, actualProduct)
-		assert.Equal(t, "Error while getting product with id 5", err.Error())
+		assert.Equal(t, "Product not found with id 5", err.Error())
+	})
+
+	clear(ctx, dbPool)
+}
+
+func TestDeleteById(t *testing.T) {
+	setup(ctx, dbPool)
+
+	t.Run("DeleteById", func(t *testing.T) {
+		productRepository.DeleteById(1)
+		_, err := productRepository.GetById(1)
+		assert.Equal(t, "Product not found with id 1", err.Error())
 	})
 
 	clear(ctx, dbPool)
