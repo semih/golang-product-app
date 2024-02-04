@@ -24,7 +24,7 @@ func (productController *ProductController) RegisterRoutes(e *echo.Echo) {
 	e.GET("/api/v1/products", productController.GetAllProducts)
 	e.POST("/api/v1/products", productController.AddProduct)
 	e.PUT("/api/v1/products/:id", productController.UpdatePrice)
-	e.DELETE("/api/v1/products", productController.DeleteProductById)
+	e.DELETE("/api/v1/products/:id", productController.DeleteProductById)
 }
 
 func (productController *ProductController) GetProductById(c echo.Context) error {
@@ -91,5 +91,14 @@ func (productController *ProductController) UpdatePrice(c echo.Context) error {
 }
 
 func (productController *ProductController) DeleteProductById(c echo.Context) error {
-	return nil
+	param := c.Param("id")
+	productId, _ := strconv.Atoi(param)
+
+	err := productController.productService.DeleteById(int64(productId))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, response.ErrorResponse{
+			ErrorDescription: err.Error(),
+		})
+	}
+	return c.NoContent(http.StatusOK)
 }
