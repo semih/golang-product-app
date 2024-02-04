@@ -68,3 +68,58 @@ sh test/scripts/test_db.sh
 ```bash
 go test test/infrastructure/product_repository_test.go -v
 ```
+
+## API Documentation
+
+### AddProduct Failed - Discount can not be greater than 70
+POST http://localhost:8080/api/v1/products
+Content-Type: application/json
+
+{
+"name": "Coffee Machine",
+"price": 1500.0,
+"discount": 80.0,
+"store": "ABC TECH"
+}
+
+### AddProduct
+POST http://localhost:8080/api/v1/products
+Content-Type: application/json
+
+{
+"name": "Coffee Machine",
+"price": 1500.0,
+"discount": 0.0,
+"store": "ABC TECH"
+}
+
+### AddProduct
+POST http://localhost:8080/api/v1/products
+Content-Type: application/json
+
+{
+"name": "Cup",
+"price": 100.0,
+"discount": 0.0,
+"store": "FFF TECH"
+}
+
+### GetAllProducts
+GET http://localhost:8080/api/v1/products
+Accept: application/json
+
+### GetAllProductsByStore
+GET http://localhost:8080/api/v1/products?store=FFF TECH
+Accept: application/json
+
+### GetById
+GET http://localhost:8080/api/v1/products/1
+Accept: application/json
+
+### GetById
+GET http://localhost:8080/api/v1/products/2
+Accept: application/json
+
+### GetById Failed - Product not found with id 10
+GET http://localhost:8080/api/v1/products/10
+Accept: application/json
