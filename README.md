@@ -4,13 +4,13 @@
 #### Follow the steps below in order to run the project in local:
 
 To get the frameworks used in the project:
-- echo framework - https://github.com/labstack/echo (for webserver)
+- **echo framework** - https://github.com/labstack/echo (for webserver)
   - go get github.com/labstack/echo/v4
-- pgxpool - https://github.com/jackc/pgx (for database)
+- **pgxpool** - https://github.com/jackc/pgx (for database)
   - go get github.com/jackc/pgx/v4/pgxpool@v4.18.1
-- gommon - https://github.com/labstack/gommon (for logging)
+- **gommon** - https://github.com/labstack/gommon (for logging)
   - go get github.com/labstack/gommon
-- testify - https://github.com/stretchr/testify (for testing)
+- **testify** - https://github.com/stretchr/testify (for testing)
   - go get github.com/stretchr/testify
 
 
@@ -72,6 +72,7 @@ go test test/infrastructure/product_repository_test.go -v
 ## API Documentation
 
 ##### AddProduct Failed - Discount can not be greater than 70
+```json
 POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
@@ -81,8 +82,10 @@ Content-Type: application/json
 "discount": 80.0,
 "store": "ABC TECH"
 }
+```
 
 ##### AddProduct
+```json
 POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
@@ -92,48 +95,46 @@ Content-Type: application/json
 "discount": 0.0,
 "store": "ABC TECH"
 }
-
-##### AddProduct
-POST http://localhost:8080/api/v1/products
-Content-Type: application/json
-
-{
-"name": "Cup",
-"price": 100.0,
-"discount": 0.0,
-"store": "FFF TECH"
-}
+```
 
 ##### GetAllProducts
+```json
 GET http://localhost:8080/api/v1/products
 Accept: application/json
+```
 
 ##### GetAllProductsByStore
+```json
 GET http://localhost:8080/api/v1/products?store=ABC TECH
 Accept: application/json
-
-### GetProductById
-GET http://localhost:8080/api/v1/products/1
-Accept: application/json
+```
 
 ##### GetProductById
-GET http://localhost:8080/api/v1/products/2
+```json
+GET http://localhost:8080/api/v1/products/1
 Accept: application/json
+```
 
 ##### GetProductById Failed - Product not found with id 10
+```json
 GET http://localhost:8080/api/v1/products/10
 Accept: application/json
-
+```
 
 ##### UpdatePrice Failed - Parameter newPrice is required!
+```json
 PUT http://localhost:8080/api/v1/products/2
 Content-Type: application/json
+```
 
 ##### UpdatePrice Failed - NewPrice Format Disrupted!
+```json
 PUT http://localhost:8080/api/v1/products/2?newPrice=abc
 Content-Type: application/json
+```
 
 ##### UpdatePrice
+```json
 PUT http://localhost:8080/api/v1/products/2?newPrice=3000.0
 Content-Type: application/json
 
@@ -143,7 +144,4 @@ Content-Type: application/json
 "discount": 0.0,
 "store": "ABC TECH"
 }
-
-##### GetProductById
-GET http://localhost:8080/api/v1/products/2
-Accept: application/json
+```
