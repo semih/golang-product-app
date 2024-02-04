@@ -71,7 +71,7 @@ go test test/infrastructure/product_repository_test.go -v
 
 ## API Documentation
 
-### AddProduct Failed - Discount can not be greater than 70
+##### AddProduct Failed - Discount can not be greater than 70
 POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
@@ -82,7 +82,7 @@ Content-Type: application/json
 "store": "ABC TECH"
 }
 
-### AddProduct
+##### AddProduct
 POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
@@ -93,7 +93,7 @@ Content-Type: application/json
 "store": "ABC TECH"
 }
 
-### AddProduct
+##### AddProduct
 POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
@@ -104,22 +104,46 @@ Content-Type: application/json
 "store": "FFF TECH"
 }
 
-### GetAllProducts
+##### GetAllProducts
 GET http://localhost:8080/api/v1/products
 Accept: application/json
 
-### GetAllProductsByStore
-GET http://localhost:8080/api/v1/products?store=FFF TECH
+##### GetAllProductsByStore
+GET http://localhost:8080/api/v1/products?store=ABC TECH
 Accept: application/json
 
-### GetById
+### GetProductById
 GET http://localhost:8080/api/v1/products/1
 Accept: application/json
 
-### GetById
+##### GetProductById
 GET http://localhost:8080/api/v1/products/2
 Accept: application/json
 
-### GetById Failed - Product not found with id 10
+##### GetProductById Failed - Product not found with id 10
 GET http://localhost:8080/api/v1/products/10
+Accept: application/json
+
+
+##### UpdatePrice Failed - Parameter newPrice is required!
+PUT http://localhost:8080/api/v1/products/2
+Content-Type: application/json
+
+##### UpdatePrice Failed - NewPrice Format Disrupted!
+PUT http://localhost:8080/api/v1/products/2?newPrice=abc
+Content-Type: application/json
+
+##### UpdatePrice
+PUT http://localhost:8080/api/v1/products/2?newPrice=3000.0
+Content-Type: application/json
+
+{
+"name": "Coffee Machine",
+"price": 1500.0,
+"discount": 0.0,
+"store": "ABC TECH"
+}
+
+##### GetProductById
+GET http://localhost:8080/api/v1/products/2
 Accept: application/json

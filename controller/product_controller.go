@@ -23,7 +23,7 @@ func (productController *ProductController) RegisterRoutes(e *echo.Echo) {
 	e.GET("/api/v1/products/:id", productController.GetProductById)
 	e.GET("/api/v1/products", productController.GetAllProducts)
 	e.POST("/api/v1/products", productController.AddProduct)
-	e.PUT("/api/v1/products", productController.UpdatePrice)
+	e.PUT("/api/v1/products/:id", productController.UpdatePrice)
 	e.DELETE("/api/v1/products", productController.DeleteProductById)
 }
 
@@ -38,17 +38,17 @@ func (productController *ProductController) GetProductById(c echo.Context) error
 		})
 	}
 
-	return c.JSON(http.StatusOK, product)
+	return c.JSON(http.StatusOK, response.ToResponse(product))
 }
 
 func (productController *ProductController) GetAllProducts(c echo.Context) error {
 	store := c.QueryParam("store")
 	if len(store) == 0 {
 		allProducts := productController.productService.GetAllProducts()
-		return c.JSON(http.StatusOK, allProducts)
+		return c.JSON(http.StatusOK, response.ToResponseList(allProducts))
 	}
 	productsWithGivenStore := productController.productService.GetAllProductsByStore(store)
-	return c.JSON(http.StatusOK, productsWithGivenStore)
+	return c.JSON(http.StatusOK, response.ToResponseList(productsWithGivenStore))
 }
 
 func (productController *ProductController) AddProduct(c echo.Context) error {
@@ -65,7 +65,29 @@ func (productController *ProductController) AddProduct(c echo.Context) error {
 }
 
 func (productController *ProductController) UpdatePrice(c echo.Context) error {
-	return nil
+	param := c.Param("id")
+	productId, _ := strconv.Atoi(param)
+	newPrice := c.QueryParam("newPrice")
+	if len(newPrice) == 0 {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse{
+			ErrorDescription: "Parameter newPrice is required!",
+		})
+	}
+
+	convertedPrice, err := strconv.ParseFloat(newPrice, 32)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse{
+			ErrorDescription: "NewPrice Format Disrupted!",
+		})
+	}
+
+	serviceErr := productController.productService.UpdatePrice(int64(productId), float32(convertedPrice))
+	if serviceErr != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse{
+			ErrorDescription: serviceErr.Error(),
+		})
+	}
+	return c.NoContent(http.StatusOK)
 }
 
 func (productController *ProductController) DeleteProductById(c echo.Context) error {
